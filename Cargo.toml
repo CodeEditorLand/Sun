@@ -1,0 +1,23 @@
+[[bin]]
+name = "Sun"
+path = "Source/Library.rs"
+
+[dependencies]
+
+[lib]
+crate-type = ["staticlib", "cdylib", "rlib"]
+name = "Library"
+path = "Source/Library.rs"
+
+[package]
+autobenches = false
+autobins = false
+autoexamples = false
+autotests = false
+default-run = "Sun"
+description = "☀️ Sun —"
+license = "MIT"
+name = "sun"
+repository = "https://github.com/CodeEditorLand/Sun.git"
+version = "0.0.0"
+edition = "2021"
