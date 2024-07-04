@@ -30,8 +30,3 @@ name = "sun"
 repository = "https://github.com/CodeEditorLand/Sun.git"
 version = "0.0.0"
 edition = "2021"
-
-[build-dependencies]
-serde = "1.0.203"
-serde_json = "1.0.120"
-toml = "0.8.14"
