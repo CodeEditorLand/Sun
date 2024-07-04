@@ -11,9 +11,7 @@ struct FileEdit {
 
 #[tokio::main]
 async fn main() {
-	let Listen = TcpListener::bind("127.0.0.1:9999").await.unwrap();
-
-	while let Ok((Stream, _)) = Listen.accept().await {
+	while let Ok((Stream, _)) = TcpListener::bind("127.0.0.1:9999").await.unwrap().accept().await {
 		tokio::spawn(Handler(Stream));
 	}
 }
