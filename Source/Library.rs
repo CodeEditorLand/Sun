@@ -43,12 +43,13 @@ async fn main() {
 		.collect();
 
 	while let Ok((stream, _)) =
-		TcpListener::bind("127.0.0.1:8080").await.expect("Cannot TcpListener.").accept().await
+		TcpListener::bind("127.0.0.1:9999").await.expect("Cannot TcpListener.").accept().await
 	{
-		let queue = Work.clone();
-		let rx = Recept.clone();
-		let ws_stream = accept_async(stream).await.expect("Failed to accept");
-		tokio::spawn(Yell(ws_stream, queue, rx));
+		tokio::spawn(Yell(
+			accept_async(stream).await.expect("Cannot accept_async."),
+			Work.clone(),
+			Recept.clone(),
+		));
 	}
 
 	join_all(Force).await;
