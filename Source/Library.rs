@@ -5,11 +5,11 @@ use std::sync::Arc;
 use tokio::{net::TcpListener, sync::mpsc};
 use tokio_tungstenite::accept_async;
 
-struct Workers;
+struct Struct;
 
 #[async_trait::async_trait]
-impl Worker for Workers {
-	async fn Receive(&self, Action: Action) -> ActionResult {
+impl Struct for Struct {
+	async fn Fn(&self, Action: Action) -> ActionResult {
 		Box::pin(async move {
 			match Action {
 				Action::Write { Path, Content } => match tokio::fs::write(&Path, &Content).await {
