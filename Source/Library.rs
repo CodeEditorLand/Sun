@@ -13,18 +13,13 @@ impl Struct for Struct {
 		Box::pin(async move {
 			match Action {
 				Action::Write { Path, Content } => match tokio::fs::write(&Path, &Content).await {
-					Ok(_) => {
-						ActionResult { Action, ActionResult: Ok(format!("File written: {}", Path)) }
-					}
+					Ok(_) => ActionResult { Action, ActionResult: Ok(()) },
 					Err(Error) => ActionResult {
 						Action,
-						ActionResult: Err(format!("Failed to write file: {}", Error)),
+						ActionResult: Err(format!("Cannot Action: {}", Error)),
 					},
 				},
-				_ => ActionResult {
-					Action,
-					ActionResult: Err("Invalid Action for Worker".to_string()),
-				},
+				_ => ActionResult { Action, ActionResult: Err("Cannot Action.".to_string()) },
 			}
 		})
 	}
@@ -33,7 +28,7 @@ impl Struct for Struct {
 #[tokio::main]
 async fn main() {
 	let Work = Arc::new(Work::new());
-	let (Acceptance, Recept) = mpsc::channel(100);
+	let (Acceptance, Receipt) = mpsc::channel(100);
 
 	// @TODO: Auto-calc number of workers in the force
 	let Force: Vec<_> = (0..4)
@@ -48,7 +43,7 @@ async fn main() {
 		tokio::spawn(Yell(
 			accept_async(stream).await.expect("Cannot accept_async."),
 			Work.clone(),
-			Recept.clone(),
+			Receipt.clone(),
 		));
 	}
 
