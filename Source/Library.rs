@@ -28,12 +28,12 @@ impl Struct for Struct {
 #[tokio::main]
 async fn main() {
 	let Work = Arc::new(Work::new());
-	let (Acceptance, Receipt) = mpsc::channel(100);
+	let (Approval, Receipt) = mpsc::channel(100);
 
 	// @TODO: Auto-calc number of workers in the force
 	let Force: Vec<_> = (0..4)
 		.map(|_| {
-			tokio::spawn(Job(Arc::new(Worker) as Arc<dyn Worker>, Work.clone(), Acceptance.clone()))
+			tokio::spawn(Job(Arc::new(Worker) as Arc<dyn Worker>, Work.clone(), Approval.clone()))
 		})
 		.collect();
 
