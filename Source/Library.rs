@@ -5,10 +5,10 @@ use std::sync::Arc;
 use tokio::{net::TcpListener, sync::mpsc};
 use tokio_tungstenite::accept_async;
 
-struct Worker;
+struct Workers;
 
 #[async_trait::async_trait]
-impl Worker for Worker {
+impl Worker for Workers {
 	async fn Receive(&self, Action: Action) -> ActionResult {
 		Box::pin(async move {
 			match Action {
@@ -33,13 +33,12 @@ impl Worker for Worker {
 #[tokio::main]
 async fn main() {
 	let Work = Arc::new(Work::new());
-	let (tx, rx) = mpsc::channel(100);
+	let (Acceptance, Recept) = mpsc::channel(100);
 
-	let num_workers = 4;
-	let workers: Vec<_> = (0..num_workers)
+	// @TODO: Auto-calc number of workers in the force
+	let Force: Vec<_> = (0..4)
 		.map(|_| {
-			let worker = Arc::new(Worker) as Arc<dyn Worker>;
-			tokio::spawn(Job(worker, Work.clone(), tx.clone()))
+			tokio::spawn(Job(Arc::new(Worker) as Arc<dyn Worker>, Work.clone(), Acceptance.clone()))
 		})
 		.collect();
 
@@ -47,10 +46,10 @@ async fn main() {
 		TcpListener::bind("127.0.0.1:8080").await.expect("Cannot TcpListener.").accept().await
 	{
 		let queue = Work.clone();
-		let rx = rx.clone();
+		let rx = Recept.clone();
 		let ws_stream = accept_async(stream).await.expect("Failed to accept");
 		tokio::spawn(Yell(ws_stream, queue, rx));
 	}
 
-	join_all(workers).await;
+	join_all(Force).await;
 }
