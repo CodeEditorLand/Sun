@@ -1,4 +1,4 @@
-use Echo::Fn::Job::{Action, ActionResult, Fn as Job, Work, Worker, Yell::Fn as Yell};
+use Echo::Fn::Job::{Action, ActionResult, Fn as Job, Worker, Yell::Fn as Yell};
 
 use futures::future::join_all;
 use std::sync::Arc;
@@ -24,14 +24,12 @@ impl Worker for Site {
 
 #[tokio::main]
 async fn main() {
-	let Work = Arc::new(Worker::new());
+	let Work = Arc::new(<dyn Worker>::new());
 	let (Approval, Receipt) = mpsc::channel(100);
 
-	// @TODO: Auto-calc number of workers in the force
+	// @TODO: Auto-calc number of workers on the force
 	let Force: Vec<_> = (0..4)
-		.map(|_| {
-			tokio::spawn(Job(Arc::new(Site) as Arc<dyn Worker>, Work.clone(), Approval.clone()))
-		})
+		.map(|_| tokio::spawn(Job(Arc::new(Site) as Arc<dyn Worker>, Work, Approval)))
 		.collect();
 
 	while let Ok((stream, _)) =
@@ -39,7 +37,7 @@ async fn main() {
 	{
 		tokio::spawn(Yell(
 			accept_async(stream).await.expect("Cannot accept_async."),
-			Work.clone(),
+			Work,
 			Receipt,
 		));
 	}
