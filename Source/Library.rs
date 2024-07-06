@@ -1,14 +1,15 @@
-use echo::{Action, ActionResult, Job, Work, Worker, Yell};
+// @TODO: Finish this and import proper common libs from echo
+use echo::{Action, ActionResult, Job, WorkQueue, Worker, Yell};
 
 use futures::future::join_all;
 use std::sync::Arc;
 use tokio::{net::TcpListener, sync::mpsc};
 use tokio_tungstenite::accept_async;
 
-struct Struct;
+struct Site;
 
 #[async_trait::async_trait]
-impl Struct for Struct {
+impl Worker for Site {
 	async fn Fn(&self, Action: Action) -> ActionResult {
 		Box::pin(async move {
 			match Action {
@@ -27,13 +28,13 @@ impl Struct for Struct {
 
 #[tokio::main]
 async fn main() {
-	let Work = Arc::new(Work::new());
+	let Work = Arc::new(Worker::new());
 	let (Approval, Receipt) = mpsc::channel(100);
 
 	// @TODO: Auto-calc number of workers in the force
 	let Force: Vec<_> = (0..4)
 		.map(|_| {
-			tokio::spawn(Job(Arc::new(Worker) as Arc<dyn Worker>, Work.clone(), Approval.clone()))
+			tokio::spawn(Job(Arc::new(Site) as Arc<dyn Worker>, Work.clone(), Approval.clone()))
 		})
 		.collect();
 
