@@ -1,6 +1,6 @@
 [[bin]]
 name = "Sun"
-path = "Source/Library.rs"
+path = "Source/Sun.rs"
 
 [build-dependencies]
 serde = { version = "1.0.203", features = ["derive"] }
@@ -15,11 +15,6 @@ serde = "1.0.203"
 serde_json = "1.0.120"
 tokio = "1.38.0"
 tokio-tungstenite = "0.23.1"
-
-[lib]
-crate-type = ["staticlib", "cdylib", "rlib"]
-name = "Sun"
-path = "Source/Library.rs"
 
 [package]
 autobenches = false

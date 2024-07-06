@@ -1,8 +1,7 @@
-use std::sync::Arc;
-
 use Echo::Fn::Job::{Action, ActionResult, Work, Worker};
 
 use futures::future::join_all;
+use std::sync::Arc;
 
 struct Site;
 
