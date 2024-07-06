@@ -18,7 +18,7 @@ tokio-tungstenite = "0.23.1"
 
 [lib]
 crate-type = ["staticlib", "cdylib", "rlib"]
-name = "Library"
+name = "Sun"
 path = "Source/Library.rs"
 
 [package]
