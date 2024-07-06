@@ -1,5 +1,4 @@
-// @TODO: Finish this and import proper common libs from echo
-use echo::{Action, ActionResult, Job, WorkQueue, Worker, Yell};
+use Echo::Fn::Job::{Action, ActionResult, Fn as Job, Work, Worker, Yell::Fn as Yell};
 
 use futures::future::join_all;
 use std::sync::Arc;
@@ -10,19 +9,16 @@ struct Site;
 
 #[async_trait::async_trait]
 impl Worker for Site {
-	async fn Fn(&self, Action: Action) -> ActionResult {
-		Box::pin(async move {
-			match Action {
-				Action::Write { Path, Content } => match tokio::fs::write(&Path, &Content).await {
-					Ok(_) => ActionResult { Action, ActionResult: Ok(()) },
-					Err(Error) => ActionResult {
-						Action,
-						ActionResult: Err(format!("Cannot Action: {}", Error)),
-					},
-				},
-				_ => ActionResult { Action, ActionResult: Err("Cannot Action.".to_string()) },
-			}
-		})
+	async fn Receive(&self, Action: Action) -> ActionResult {
+		match Action {
+			Action::Write { Path, Content } => match tokio::fs::write(&Path, &Content).await {
+				Ok(_) => ActionResult { Action, Result: Ok(format!("Success: {}", Path)) },
+				Err(Error) => {
+					ActionResult { Action, Result: Err(format!("Cannot Action: {}", Error)) }
+				}
+			},
+			_ => ActionResult { Action, Result: Err("Cannot Action.".to_string()) },
+		}
 	}
 }
 
@@ -44,7 +40,7 @@ async fn main() {
 		tokio::spawn(Yell(
 			accept_async(stream).await.expect("Cannot accept_async."),
 			Work.clone(),
-			Receipt.clone(),
+			Receipt,
 		));
 	}
 
