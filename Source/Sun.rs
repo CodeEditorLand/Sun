@@ -29,6 +29,8 @@ impl Worker for Site {
 
 #[tokio::main]
 async fn main() {
+	println!("Hello from Sun.");
+
 	let Work = Arc::new(Work::Begin());
 	let (Approval, Receipt) = tokio::sync::mpsc::unbounded_channel();
 	let Receipt = Arc::new(tokio::sync::Mutex::new(Receipt));
