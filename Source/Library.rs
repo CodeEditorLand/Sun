@@ -1,9 +1,8 @@
-use Echo::Fn::Job::{Action, ActionResult, Fn as Job, Work, Worker, Yell::Fn as Yell};
+use std::sync::Arc;
+
+use Echo::Fn::Job::{Action, ActionResult, Work, Worker};
 
 use futures::future::join_all;
-use std::sync::Arc;
-use tokio::{net::TcpListener, sync::mpsc};
-use tokio_tungstenite::accept_async;
 
 struct Site;
 
@@ -30,17 +29,21 @@ impl Worker for Site {
 #[tokio::main]
 async fn main() {
 	let Work = Arc::new(Work::Begin());
-	let (Approval, Receipt) = mpsc::unbounded_channel();
+	let (Approval, Receipt) = tokio::sync::mpsc::unbounded_channel();
 
 	// @TODO: Auto-calc number of workers on the force
-	let Force: Vec<_> =
-		(0..4).map(|_| tokio::spawn(Job(Arc::new(Site), Work.clone(), Approval))).collect();
+	let Force: Vec<_> = (0..4)
+		.map(|_| tokio::spawn(Echo::Fn::Job::Fn(Arc::new(Site), Work.clone(), Approval.clone())))
+		.collect();
 
-	while let Ok((stream, _)) =
-		TcpListener::bind("127.0.0.1:9999").await.expect("Cannot TcpListener.").accept().await
+	while let Ok((stream, _)) = tokio::net::TcpListener::bind("127.0.0.1:9999")
+		.await
+		.expect("Cannot TcpListener.")
+		.accept()
+		.await
 	{
-		tokio::spawn(Yell(
-			accept_async(stream).await.expect("Cannot accept_async."),
+		tokio::spawn(Echo::Fn::Job::Yell::Fn(
+			tokio_tungstenite::accept_async(stream).await.expect("Cannot accept_async."),
 			Work.clone(),
 			Receipt,
 		));
