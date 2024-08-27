@@ -1,8 +1,8 @@
 # ☀️ [Sun] —
 
-## Installation
+## 🚀 Installation
 
-## Usage
+## 🛠️ Usage
 
 ## Dependencies
 
