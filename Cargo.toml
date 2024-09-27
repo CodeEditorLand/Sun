@@ -9,11 +9,11 @@ toml = "0.8.19"
 
 [dependencies]
 Echo = { version = "0.0.1", path = "../Echo" }
-async-trait = "0.1.82"
+async-trait = "0.1.83"
 futures = "0.3.30"
 serde = { version = "1.0.210", features = ["derive"] }
 tokio = "1.40.0"
-tokio-tungstenite = "0.23.1"
+tokio-tungstenite = "0.24.0"
 
 [package]
 autobenches = false
