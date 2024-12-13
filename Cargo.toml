@@ -3,7 +3,7 @@ name = "Sun"
 path = "Source/Sun.rs"
 
 [build-dependencies]
-serde = { version = "1.0.215", features = ["derive"] }
+serde = { version = "1.0.216", features = ["derive"] }
 serde_json = { version = "1.0.133" }
 toml = { version = "0.8.19" }
 
@@ -11,10 +11,10 @@ toml = { version = "0.8.19" }
 Echo = { version = "0.0.1", path = "../Echo" }
 async-trait = "0.1.83"
 futures = { version = "0.3.31" }
-serde = { version = "1.0.215", features = ["derive"] }
+serde = { version = "1.0.216", features = ["derive"] }
 tokio = { version = "1.42.0" }
 tokio-tungstenite = "0.24.0"
-unbug = { version = "0.3.0", features = ["enable"] }
+unbug = { version = "0.4.0", features = ["enable"] }
 
 [package]
 autobenches = false
