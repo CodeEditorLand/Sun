@@ -1,6 +1,6 @@
-# ☀️ [Sun] —
+# [Sun] ☀️
 
-## 🚀 Installation
+## Installation 🚀
 
 ## 🛠️ Usage
 
