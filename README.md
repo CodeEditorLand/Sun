@@ -8,7 +8,7 @@
 
 The code imports several crates:
 
-[Sun]: HTTPS://github.com/CodeEditorLand/Sun
+[Sun]: https://github.com/CodeEditorLand/Sun
 
 ## Changelog
 
